@@ -50,7 +50,7 @@ dataset_name = args.name
 #ds = tfds.load(dataset_name, split=split, shuffle_files=False, batch_size=2 ** 16,
                #data_dir=data_dir)
 #
-ds = pd.read_csv("../data/SUBJECT_ID_to_NOTES_1a.csv")[:2000]
+ds = pd.read_csv("../data/SUBJECT_ID_to_NOTES_1a.csv")
 #ds = tf.data.Dataset.
 #assert isinstance(ds, tf.data.Dataset)
 #print(ds)

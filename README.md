@@ -74,7 +74,10 @@ The first file contains the entire Wiki40B test set smashed together, and the se
 
 From here we can now build a suffix array of this entire dataset that's now in a single file.
 
-```python3 scripts/make_suffix_array.py [path/to/dataset]```
+```
+python3 scripts/make_suffix_array.py [path/to/dataset]
+python3 scripts/make_suffix_array.py data/SUBJECT_ID_to_NOTES_1a.csv
+```
 
 For example, if you run (you should do this to follow along!)
 ```python3 scripts/make_suffix_array.py data/wiki40b.test```
@@ -263,6 +266,7 @@ If you have a large single file and want to remove all length-N duplicates from 
 
 ```
 bash scripts/deduplicate_single_file.sh [path/to/source] [path/to/destination] [dup_length_threshold] [num_cores]
+bash scripts/deduplicate_single_file.sh ../mimic/files/clinical-bert-mimic-notes/setup_outputs/SUBJECT_ID_to_NOTES_1a.csv /data/SUBJECT_ID_to_NOTES_1a_deduplicated.csv 5 2
 ```
 
 
