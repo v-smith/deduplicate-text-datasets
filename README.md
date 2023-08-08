@@ -92,7 +92,10 @@ We're not yet going to deduplicate a dataset.
 To start, let's just see how to count how often a particular example has been repeated.
 To do this, run
 
-```python3 scripts/count_occurrences.py --suffix [path/to/dataset] [--query query_string] [--query_file /path/to/query]```
+```
+python3 scripts/count_occurrences.py --suffix [path/to/dataset] [--query query_string] [--query_file /path/to/query]
+python3 scripts/count_occurrences.py --suffix data/SUBJECT_ID_to_NOTES_1a.csv --query " doses"
+```
 
 This should be very fast. Even when you run on a dataset that's 100s of gigabytes, it should take a few seconds, most of which is dominated by Python starting up. The actual core lookup just requires O(log(dataset_size)) time, which often is on the order of ~miliseconds.
 
@@ -167,6 +170,7 @@ This step reduces that down to just find ranges of bytes [a,b) which are duplica
 To do this, run
 ```
 cargo run collect --data-file data/wiki40b.test --cache-dir /tmp/cache --length-threshold 100 > /tmp/wiki40b.test.remove.byterange
+cargo run collect --data-file data/SUBJECT_ID_to_NOTES_1a_ready.train --cache-dir /tmp/cache --length-threshold 100 > /tmp/SUBJECT_ID_to_NOTES_1a_ready.train.remove.byterange
 ```
 
 The output here will be a long list of byte pair ranges
@@ -266,7 +270,7 @@ If you have a large single file and want to remove all length-N duplicates from 
 
 ```
 bash scripts/deduplicate_single_file.sh [path/to/source] [path/to/destination] [dup_length_threshold] [num_cores]
-bash scripts/deduplicate_single_file.sh ../mimic/files/clinical-bert-mimic-notes/setup_outputs/SUBJECT_ID_to_NOTES_1a.csv /data/SUBJECT_ID_to_NOTES_1a_deduplicated.csv 5 2
+bash scripts/deduplicate_single_file.sh data/SUBJECT_ID_to_NOTES_1a_ready.train data/SUBJECT_ID_to_NOTES_1a_deduplicated.train 5 2
 ```
 
 
