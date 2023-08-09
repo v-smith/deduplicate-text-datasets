@@ -114,6 +114,7 @@ The first step in deduplicating a dataset is identifying all substrings of a giv
 
 ```
 cargo run self-similar --data-file data/wiki40b.test --length-threshold 100 --cache-dir /tmp/cache --num-threads 8
+cargo run self-similar --data-file data/SUBJECT_ID_to_NOTES_1a_7000.csv --length-threshold 100 --cache-dir tmp/cache --num-threads 8
 ```
 
 For larger datasets, you may want to replace num-threads with as many cores as you have on your machine. It parallelizes perfectly, so there's no reason not to. For now though, keep it at 8 just for the sake of keeping things on track with this guide.
@@ -139,8 +140,11 @@ All pointers are the same size, but the size of the pointers depends on the size
 The above explanation might be confusing. Let's see an example. Let's fine the first duplicate in the dataset:
 ```
 $ xxd /tmp/cache/sizes_wiki40b.test_0-64596445 | head -n 1 
+xxd /tmp/cache/sizes_SUBJECT_ID_to_NOTES_1a_7000.csv_0-1145914 | head -n 1 
 00000000: 0200 0000 0200 0000 0200 0000 0200 0000  ................
 $ xxd /tmp/cache/dups_wiki40b.test_0-64596445 | head -n 1 
+
+xxd /tmp/cache/dups_SUBJECT_ID_to_NOTES_1a_7000.csv_0-1145914 | head -n 1 
 00000000: daa4 ae05 8c7a 8505 c7a4 ae05 797a 8505  .....z......yz
 ```
 
@@ -170,7 +174,7 @@ This step reduces that down to just find ranges of bytes [a,b) which are duplica
 To do this, run
 ```
 cargo run collect --data-file data/wiki40b.test --cache-dir /tmp/cache --length-threshold 100 > /tmp/wiki40b.test.remove.byterange
-cargo run collect --data-file data/SUBJECT_ID_to_NOTES_1a_ready.train --cache-dir /tmp/cache --length-threshold 100 > /tmp/SUBJECT_ID_to_NOTES_1a_ready.train.remove.byterange
+cargo run collect --data-file data/SUBJECT_ID_to_NOTES_1a_7000.csv --cache-dir tmp/cache --length-threshold 100 > /tmp/SUBJECT_ID_to_NOTES_1a_7000.train.remove.byterange
 ```
 
 The output here will be a long list of byte pair ranges
@@ -271,6 +275,7 @@ If you have a large single file and want to remove all length-N duplicates from 
 ```
 bash scripts/deduplicate_single_file.sh [path/to/source] [path/to/destination] [dup_length_threshold] [num_cores]
 bash scripts/deduplicate_single_file.sh data/SUBJECT_ID_to_NOTES_1a_ready.train data/SUBJECT_ID_to_NOTES_1a_deduplicated.train 5 2
+bash scripts/deduplicate_single_file.sh data/SUBJECT_ID_to_NOTES_1a_7000.csv data/SUBJECT_ID_to_NOTES_1a_7000_deduplicated.csv 5 2
 ```
 
 
