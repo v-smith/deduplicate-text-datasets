@@ -1,4 +1,3 @@
-import re
 from pathlib import Path
 
 import pandas as pd
@@ -9,27 +8,27 @@ from dedup.utils import collate_repeats
 
 
 def main(
-        input_data_file: Path = typer.Option(default="/data/SUBJECT_ID_to_NOTES_1a.csv",
+        input_data_file: Path = typer.Option(default="data/SUBJECT_ID_to_NOTES_1a.csv",
                                              help="Path to the input model"),
-        input_repeat_file: Path = typer.Option(default="/tmp/SUBJECT_ID_to_NOTES_1a_7000.train.remove.byterange",
+        input_repeat_file: Path = typer.Option(default="tmp/SUBJECT_ID_to_NOTES_1a.train.remove.byterange",
                                                help="Path to the jsonl file of the set"),
-        input_pseudo_file: Path = typer.Option(default="/data/SUBJECT_ID_to_NOTES_1b_7000.csv",
+        inspect_dataframes: bool = typer.Option(default=False),
+        input_pseudo_file: Path = typer.Option(default="data/SUBJECT_ID_to_NOTES_1b_7000.csv",
                                                help="Path to the input model"),
         input_psuedo_repeat_file: Path = typer.Option(
-            default="/tmp/SUBJECT_ID_to_NOTES_1b_7000.train.remove.byterange",
+            default="tmp/SUBJECT_ID_to_NOTES_1b.train.remove.byterange",
             help="Path to the jsonl file of the set"),
-        inspect_dataframes: bool = typer.Option(default=False),
 ):
     # load data and get data stats
     data_df = pd.read_csv(input_data_file)
     data_df = data_df[data_df.columns[1:]]
-    print(len(data_df.index))
+    print(f"Total Len of data {len(data_df.index)}")
 
     # check for repeats in data
     print(f"Number of Repeated Sequences: {data_df.duplicated(keep=False).value_counts()}")
     # remove repeats
     data_df.drop_duplicates(keep="first", inplace=True)
-    print(len(data_df.index))
+    print(f"Total Len of data without repeats: {len(data_df.index)}")
 
     # how many notes per patient?
     grouped = data_df.groupby("SUBJECT_ID").count().sort_values(by="TEXT", ascending=False)
@@ -51,7 +50,6 @@ def main(
         merged_df = merged_df[["n_reps", "n_reps_pseudo", "string"]]
 
     # how many "repeats" come from duplicate records
-
 
     # how many "repeats" come from same patient
     repeats_per_patient_dict = []
@@ -78,8 +76,8 @@ def main(
     #how many sequences are from more than 1 patient
     repeats_from_more_than_one_patient = [x for x in repeats_per_patient_dict if x["n_patients"] > 1]
     print(f"Repeat from more than 1 patient: {len(repeats_from_more_than_one_patient)}")
-    repeats_for_patient_109 = [x for x in repeats_per_patient_dict if 109 in x["patient_ids"]]
-    print(f"Repeat from patient 109: {len(repeats_for_patient_109)}")
+    #repeats_for_patient_109 = [x for x in repeats_per_patient_dict if 109 in x["patient_ids"]]
+    #print(f"Repeat from patient 109: {len(repeats_for_patient_109)}")
     #repeats_per_p_df = pd.DataFrame.from_records(repeats_per_patient_dict)
     #total_repeats = sum([y["n_reps"] for y in repeats_per_patient_dict])
     a = 1
