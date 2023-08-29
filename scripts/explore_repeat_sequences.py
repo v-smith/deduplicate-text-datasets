@@ -8,7 +8,7 @@ from dedup.utils import collate_repeats
 
 
 def main(
-        input_data_file: Path = typer.Option(default="data/SUBJECT_ID_to_NOTES_1a_10percent.csv.csv",
+        input_data_file: Path = typer.Option(default="data/SUBJECT_ID_to_NOTES_1a_10percent.csv",
                                              help="Path to the input model"),
         input_repeat_file: Path = typer.Option(default="tmp/SUBJECT_ID_to_NOTES_1a_10percent.train.remove.byterange",
                                                help="Path to the jsonl file of the set"),
