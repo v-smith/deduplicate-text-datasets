@@ -76,6 +76,8 @@ From here we can now build a suffix array of this entire dataset that's now in a
 
 ```
 python3 scripts/make_suffix_array.py [path/to/dataset]
+python3 scripts/make_suffix_array.py data/SUBJECT_ID_to_NOTES_1a_10percent.csv
+python3 scripts/make_suffix_array.py data/Deduplication_Example_10.csv
 python3 scripts/make_suffix_array.py data/SUBJECT_ID_to_NOTES_1a.csv
 python3 scripts/make_suffix_array.py data/SUBJECT_ID_to_NOTES_1a_deduplicated.csv
 python3 scripts/make_suffix_array.py data/SUBJECT_ID_to_NOTES_1a_deduplicated_100tokens.csv
@@ -117,7 +119,9 @@ The first step in deduplicating a dataset is identifying all substrings of a giv
 ```
 # len-threshold = number of tokens unless pass --tokenize in which case need to double (see below) 
 cargo run self-similar --data-file data/wiki40b.test --length-threshold 100 --cache-dir /tmp/cache --num-threads 8
-#cargo run self-similar --data-file data/SUBJECT_ID_to_NOTES_1a.csv --length-threshold 200 --cache-dir tmp/cache --num-threads 8
+cargo run self-similar --data-file data/Deduplication_Example_10.csv --length-threshold 100 --cache-dir tmp/cache --num-threads 8
+cargo run self-similar --data-file data/SUBJECT_ID_to_NOTES_1a_10percent.csv --length-threshold 100 --cache-dir tmp/cache --num-threads 8
+#cargo run self-similar --data-file data/SUBJECT_ID_to_NOTES_1a_400tokens.csv --length-threshold 400 --cache-dir tmp/cache --num-threads 8
 #cargo run self-similar --data-file data/SUBJECT_ID_to_NOTES_1a_deduplicated_100tokens.csv --length-threshold 100 --cache-dir tmp/cache --num-threads 8
 cargo run self-similar --data-file data/SUBJECT_ID_to_NOTES_1a_7000.csv --length-threshold 100 --cache-dir tmp/cache --num-threads 8
 cargo run self-similar --data-file data/SUBJECT_ID_to_NOTES_1b_7000.csv --length-threshold 100 --cache-dir tmp/cache --num-threads 8
@@ -180,7 +184,8 @@ This step reduces that down to just find ranges of bytes [a,b) which are duplica
 To do this, run
 ```
 cargo run collect --data-file data/wiki40b.test --cache-dir /tmp/cache --length-threshold 100 > /tmp/wiki40b.test.remove.byterange
-#cargo run collect --data-file data/SUBJECT_ID_to_NOTES_1a.csv --cache-dir tmp/cache --length-threshold 200 > tmp/SUBJECT_ID_to_NOTES_1a.train.remove.byterange
+#cargo run collect --data-file data/SUBJECT_ID_to_NOTES_1a_10percent.csv --cache-dir tmp/cache --length-threshold 100 > tmp/SUBJECT_ID_to_NOTES_1a_10percent.train.remove.byterange
+#cargo run collect --data-file data/SUBJECT_ID_to_NOTES_1a.csv --cache-dir tmp/cache --length-threshold 400 > tmp/SUBJECT_ID_to_NOTES_1a.train.remove.byterange
 cargo run collect --data-file data/SUBJECT_ID_to_NOTES_1a_7000.csv --cache-dir tmp/cache --length-threshold 100 > tmp/SUBJECT_ID_to_NOTES_1a_7000.train.remove.byterange
 cargo run collect --data-file data/SUBJECT_ID_to_NOTES_1b_7000.csv --cache-dir tmp/cache --length-threshold 100 > tmp/SUBJECT_ID_to_NOTES_1b_7000.train.remove.byterange
 ```
@@ -283,14 +288,13 @@ If you have a large single file and want to remove all length-N duplicates from 
 
 ```
 bash scripts/deduplicate_single_file.sh [path/to/source] [path/to/destination] [dup_length_threshold] [num_cores]
+bash scripts/deduplicate_single_file.sh data/Deduplication_Example_10.csv data/ 5 2
 #bash scripts/deduplicate_single_file.sh data/SUBJECT_ID_to_NOTES_1a.csv data/SUBJECT_ID_to_NOTES_1a_deduplicated.csv 200 2
 #bash scripts/deduplicate_single_file.sh data/SUBJECT_ID_to_NOTES_1a.csv data/SUBJECT_ID_to_NOTES_1a_deduplicated_100tokens.csv 100 2
 #bash scripts/deduplicate_single_file.sh data/SUBJECT_ID_to_NOTES_1a.csv data/SUBJECT_ID_to_NOTES_1a_deduplicated_400tokens.csv 400 2
 bash scripts/deduplicate_single_file.sh data/SUBJECT_ID_to_NOTES_1a_7000.csv data/SUBJECT_ID_to_NOTES_1a_7000_deduplicated.csv 5 2
 bash scripts/deduplicate_single_file.sh data/SUBJECT_ID_to_NOTES_1b_7000.csv data/SUBJECT_ID_to_NOTES_1b_7000_deduplicated.csv 5 2
 ```
-
-
 
 ## Advanced Usage
 

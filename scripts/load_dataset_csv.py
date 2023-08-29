@@ -24,9 +24,9 @@ import multiprocessing as mp
 import argparse
 
 parser = argparse.ArgumentParser(description='Load a dataset.')
-parser.add_argument('--data_dir', type=str, default="../data/SUBJECT_ID_to_NOTES_1b.csv")
+parser.add_argument('--data_dir', type=str, default="../data/SUBJECT_ID_to_NOTES_1a.csv")
 parser.add_argument('--save_dir', type=str, default="../data/")
-parser.add_argument('--name', type=str, default="SUBJECT_ID_to_NOTES_1b_7000")
+parser.add_argument('--name', type=str, default="SUBJECT_ID_to_NOTES_1a_1000")
 parser.add_argument('--split', type=str, default="train")
 parser.add_argument('--tokenize', action='store_true', default=False)
 parser.add_argument('--tokenizer', type=str, default="gpt2")
@@ -50,9 +50,10 @@ dataset_name = args.name
 #ds = tfds.load(dataset_name, split=split, shuffle_files=False, batch_size=2 ** 16,
                #data_dir=data_dir)
 #
-ds = pd.read_csv("../data/SUBJECT_ID_to_NOTES_1a.csv")[:7000]
+ds = pd.read_csv("../data/SUBJECT_ID_to_NOTES_1a.csv").sample(frac=0.1)
+print(len(ds))
 
-ds.to_csv(path_or_buf="../data/SUBJECT_ID_to_NOTES_1b_7000.csv")
+ds.to_csv(path_or_buf="../data/SUBJECT_ID_to_NOTES_1a_10percent.csv")
 #ds = tf.data.Dataset.
 #assert isinstance(ds, tf.data.Dataset)
 #print(ds)

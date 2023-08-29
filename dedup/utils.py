@@ -35,8 +35,7 @@ def collate_repeats(data, repeats_file):
     lines = repeats.readlines()
     out_idx = []
     counter = 0
-    print("---------Reading repeat file lines----------")
-    for line in tqdm(lines):
+    for line in lines:
         counter += 1
         if "out" in line:
             out_idx.append(counter)
