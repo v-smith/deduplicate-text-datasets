@@ -8,9 +8,9 @@ from dedup.utils import collate_repeats
 
 
 def main(
-        input_data_file: Path = typer.Option(default="data/SUBJECT_ID_to_NOTES_1a.csv",
+        input_data_file: Path = typer.Option(default="data/SUBJECT_ID_to_NOTES_1a_7000.csv",
                                              help="Path to the input model"),
-        input_repeat_file: Path = typer.Option(default="tmp/SUBJECT_ID_to_NOTES_1a.train.remove.byterange",
+        input_repeat_file: Path = typer.Option(default="tmp/SUBJECT_ID_to_NOTES_1a_7000.train.remove.byterange",
                                                help="Path to the jsonl file of the set"),
         inspect_dataframes: bool = typer.Option(default=False),
         input_pseudo_file: Path = typer.Option(default="data/SUBJECT_ID_to_NOTES_1b_7000.csv",
@@ -29,6 +29,8 @@ def main(
     # remove repeats
     data_df.drop_duplicates(keep="first", inplace=True)
     print(f"Total Len of data without repeats: {len(data_df.index)}")
+
+    print(data_df.columns)
 
     # how many notes per patient?
     grouped = data_df.groupby("SUBJECT_ID").count().sort_values(by="TEXT", ascending=False)
