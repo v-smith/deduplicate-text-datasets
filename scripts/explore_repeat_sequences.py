@@ -37,8 +37,10 @@ def main(
 
     # load data file
     data = open(input_data_file, "rb").read()
+    print("------Data File Open--------")
     # load repeat file
     repeat_dict = collate_repeats(data=data, repeats_file=input_repeat_file)
+    print("---------Repeats Collated-----------")
     # inspect data
     if inspect_dataframes:
         psuedo_data = open(input_pseudo_file, "rb").read()
@@ -54,6 +56,7 @@ def main(
 
     # how many "repeats" come from same patient
     repeats_per_patient_dict = []
+    print("---------Starting Repeat Per Patient Count------------")
     for repeat in tqdm(repeat_dict):
         patients = []
         counter = 0
@@ -77,8 +80,8 @@ def main(
     #how many sequences are from more than 1 patient
     repeats_from_more_than_one_patient = [x for x in repeats_per_patient_dict if x["n_patients"] > 1]
     print(f"Repeat from more than 1 patient: {len(repeats_from_more_than_one_patient)}")
-    #repeats_for_patient_109 = [x for x in repeats_per_patient_dict if 109 in x["patient_ids"]]
-    #print(f"Repeat from patient 109: {len(repeats_for_patient_109)}")
+    repeats_for_patient_109 = [x for x in repeats_per_patient_dict if 109 in x["patient_ids"]]
+    print(f"Repeat from patient 109: {len(repeats_for_patient_109)}")
     #repeats_per_p_df = pd.DataFrame.from_records(repeats_per_patient_dict)
     #total_repeats = sum([y["n_reps"] for y in repeats_per_patient_dict])
     a = 1

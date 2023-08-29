@@ -1,4 +1,5 @@
 from termcolor import colored, cprint
+from tqdm import tqdm
 
 
 def view_all_repeats_terminal(inp_text, match_indices, subject):
@@ -34,7 +35,8 @@ def collate_repeats(data, repeats_file):
     lines = repeats.readlines()
     out_idx = []
     counter = 0
-    for line in lines:
+    print("---------Reading repeat file lines----------")
+    for line in tqdm(lines):
         counter += 1
         if "out" in line:
             out_idx.append(counter)
@@ -47,7 +49,8 @@ def collate_repeats(data, repeats_file):
     rep_strings = []
     all_n_reps = []
     rep_dictionary = []
-    for line in lines:
+    print("--------Finding repeat sequences----------------")
+    for line in tqdm(lines):
         count += 1
         #new_line = line.decode()
         new_line = line.strip().split()
