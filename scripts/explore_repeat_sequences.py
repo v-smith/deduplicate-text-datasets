@@ -22,6 +22,7 @@ def main(
     # load data and get data stats
     data_df = pd.read_csv(input_data_file)
     data_df = data_df[data_df.columns[1:]]
+    print(f"Columns = {data_df.columns}")
     print(f"Total Len of data {len(data_df.index)}")
 
     # check for repeats in data
@@ -29,8 +30,6 @@ def main(
     # remove repeats
     data_df.drop_duplicates(keep="first", inplace=True)
     print(f"Total Len of data without repeats: {len(data_df.index)}")
-
-    print(data_df.columns)
 
     # how many notes per patient?
     grouped = data_df.groupby("SUBJECT_ID").count().sort_values(by="TEXT", ascending=False)
