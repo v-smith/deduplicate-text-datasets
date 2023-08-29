@@ -288,7 +288,7 @@ If you have a large single file and want to remove all length-N duplicates from 
 
 ```
 bash scripts/deduplicate_single_file.sh [path/to/source] [path/to/destination] [dup_length_threshold] [num_cores]
-bash scripts/deduplicate_single_file.sh data/Deduplication_Example_10.csv data/ 5 2
+bash scripts/deduplicate_single_file.sh data/SUBJECT_ID_to_NOTES_1a_10percent.csv data/SUBJECT_ID_to_NOTES_1a_10percent_deduplicated.csv 5 2
 #bash scripts/deduplicate_single_file.sh data/SUBJECT_ID_to_NOTES_1a.csv data/SUBJECT_ID_to_NOTES_1a_deduplicated.csv 200 2
 #bash scripts/deduplicate_single_file.sh data/SUBJECT_ID_to_NOTES_1a.csv data/SUBJECT_ID_to_NOTES_1a_deduplicated_100tokens.csv 100 2
 #bash scripts/deduplicate_single_file.sh data/SUBJECT_ID_to_NOTES_1a.csv data/SUBJECT_ID_to_NOTES_1a_deduplicated_400tokens.csv 400 2
