@@ -20,7 +20,7 @@ def main(
             help="Path to the jsonl file of the set"),
 ):
     # load data and get data stats
-    data_df = pd.read_csv(input_data_file)
+    data_df = pd.read_csv(input_data_file, index_col=False)
     data_df = data_df[data_df.columns[1:]]
     print(f"Columns = {data_df.columns}")
     print(f"Total Len of data {len(data_df.index)}")
