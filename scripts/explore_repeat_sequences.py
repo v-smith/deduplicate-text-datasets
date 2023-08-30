@@ -10,7 +10,7 @@ from dedup.utils import collate_repeats
 def main(
         input_data_file: Path = typer.Option(default="../data/SUBJECT_ID_to_NOTES_1a_10percent.csv",
                                              help="Path to the input model"),
-        input_repeat_file: Path = typer.Option(default="../tmp/SUBJECT_ID_to_NOTES_1a_10percent_check.train.remove.byterange",
+        input_repeat_file: Path = typer.Option(default="../tmp/SUBJECT_ID_to_NOTES_1a_10percent.train.remove.byterange",
                                                help="Path to the jsonl file of the set"),
         inspect_dataframes: bool = typer.Option(default=False),
         input_pseudo_file: Path = typer.Option(default="data/SUBJECT_ID_to_NOTES_1b_7000.csv",
