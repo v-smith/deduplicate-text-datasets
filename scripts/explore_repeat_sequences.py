@@ -5,13 +5,12 @@ import typer
 from tqdm import tqdm
 
 from dedup.utils import collate_repeats
-import multiprocessing as mp
 
 
 def main(
-        input_data_file: Path = typer.Option(default="data/SUBJECT_ID_to_NOTES_1a_10percent.csv",
+        input_data_file: Path = typer.Option(default="../data/SUBJECT_ID_to_NOTES_1a_10percent.csv",
                                              help="Path to the input model"),
-        input_repeat_file: Path = typer.Option(default="tmp/SUBJECT_ID_to_NOTES_1a_10percent.train.remove.byterange",
+        input_repeat_file: Path = typer.Option(default="../tmp/SUBJECT_ID_to_NOTES_1a_10percent_check.train.remove.byterange",
                                                help="Path to the jsonl file of the set"),
         inspect_dataframes: bool = typer.Option(default=False),
         input_pseudo_file: Path = typer.Option(default="data/SUBJECT_ID_to_NOTES_1b_7000.csv",
@@ -20,22 +19,6 @@ def main(
             default="tmp/SUBJECT_ID_to_NOTES_1b.train.remove.byterange",
             help="Path to the jsonl file of the set"),
 ):
-    # load data and get data stats
-    data_df = pd.read_csv(input_data_file, index_col=False)
-    data_df = data_df[data_df.columns[1:]]
-    print(f"Columns = {data_df.columns}")
-    print(f"Total Len of data {len(data_df.index)}")
-
-    # check for repeats in data
-    print(f"Number of Repeated Rows: {data_df.duplicated(keep=False).value_counts()}")
-    # remove repeats
-    data_df.drop_duplicates(keep="first", inplace=True)
-    print(f"Total Len of data without repeats: {len(data_df.index)}")
-
-    # how many notes per patient?
-    grouped = data_df.groupby("SUBJECT_ID").count().sort_values(by="TEXT", ascending=False)
-    print(f"Total number of patients: {len(grouped)}")  # 200 patients in 7000 records
-
     # load data file
     data = open(input_data_file, "rb").read()
     print("------Data File Open--------")
@@ -54,16 +37,30 @@ def main(
         #merged_df.columns = ["n_reps", "string", "n_reps_pseudo"]
         #merged_df = merged_df[["n_reps", "n_reps_pseudo", "string"]]
 
+    # load data and get data stats
+    data_df = pd.read_csv(input_data_file, index_col=False)
+    data_df = data_df[data_df.columns[1:]]
+    print(f"Columns = {data_df.columns}")
+    print(f"Total Len of data {len(data_df.index)}")
+
+    # check for repeats in data
+    print(f"Number of Repeated Rows: {data_df.duplicated(keep=False).value_counts()}")
+    # remove repeats
+    data_df.drop_duplicates(keep="first", inplace=True)
+    print(f"Total Len of data without repeats: {len(data_df.index)}")
+
+    # how many notes per patient?
+    grouped = data_df.groupby("SUBJECT_ID").count().sort_values(by="TEXT", ascending=False)
+    print(f"Total number of patients: {len(grouped)}")  # 200 patients in 7000 records
+
     # how many "repeats" come from duplicate records
 
     # how many "repeats" come from same patient
     # init objects
-    #pool = mp.Pool(8)
-    #jobs = []
 
     repeats_per_patient_dict = []
     print("---------Finding Repeats Per Patient------------")
-    data_series = data_df.set_index(keys="SUBJECT_ID", drop=True, inplace=True).squeeze()
+    data_series = data_df.set_index(keys="SUBJECT_ID", drop=True).squeeze()
     for repeat in tqdm(repeat_dict):
         patients = []
         counter = 0

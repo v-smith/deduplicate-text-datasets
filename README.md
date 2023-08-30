@@ -149,12 +149,12 @@ All pointers are the same size, but the size of the pointers depends on the size
 
 The above explanation might be confusing. Let's see an example. Let's fine the first duplicate in the dataset:
 ```
-$ xxd /tmp/cache/sizes_wiki40b.test_0-64596445 | head -n 1 
-xxd /tmp/cache/sizes_SUBJECT_ID_to_NOTES_1a_7000.csv_0-1145914 | head -n 1 
+$ xxd /tmp/cache/sizes_wiki40b.test_0-64596445 | head -n 1  
+xxd tmp/cache/sizes_Deduplication_Example_10.csv_0-690 | head -n 1 
 00000000: 0200 0000 0200 0000 0200 0000 0200 0000  ................
 $ xxd /tmp/cache/dups_wiki40b.test_0-64596445 | head -n 1 
 
-xxd /tmp/cache/dups_SUBJECT_ID_to_NOTES_1a_7000.csv_0-1145914 | head -n 1 
+xxd /tmp/cache/dups_Deduplication_Example_10.csv_0-690 | head -n 1 
 00000000: daa4 ae05 8c7a 8505 c7a4 ae05 797a 8505  .....z......yz
 ```
 

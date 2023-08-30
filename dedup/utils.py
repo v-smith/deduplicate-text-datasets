@@ -51,7 +51,7 @@ def collate_repeats(data, repeats_file):
     rep_dictionary = []
     print("--------Finding repeat sequences----------------")
     with open(repeats_file, "r") as lines:
-        for line in tqdm(lines):
+        for line in lines:
             count += 1
             if out_idx:
                 if count > out_idx[0]:
