@@ -1,5 +1,6 @@
 from termcolor import colored, cprint
 from tqdm import tqdm
+import multiprocessing as mp
 
 
 def view_all_repeats_terminal(inp_text, match_indices, subject):
@@ -40,27 +41,40 @@ def collate_repeats(data, repeats_file):
         if "out" in line:
             out_idx.append(counter)
             break
-    if out_idx:
+    """if out_idx:
         assert len(out_idx) == 1
-        lines = lines[out_idx[0]:]
+        lines = lines[out_idx[0]:]   """
 
     count = 0
     rep_strings = []
     all_n_reps = []
     rep_dictionary = []
     print("--------Finding repeat sequences----------------")
-    for line in tqdm(lines):
-        count += 1
-        #new_line = line.decode()
-        new_line = line.strip().split()
-        first_idx = int(new_line[0])
-        second_idx = int(new_line[1])
-        rep_string = data[first_idx:second_idx]
-        rep_strings.append(rep_string.decode())
-        n_reps = data.count(data[first_idx:second_idx])
-        all_n_reps.append(n_reps)
-        rep_dictionary.append({"n_reps": n_reps, "string": rep_string.decode()})
-        a = 1
+    with open(repeats_file, "r") as lines:
+        for line in tqdm(lines):
+            count += 1
+            if out_idx:
+                if count > out_idx[0]:
+                    #new_line = line.decode()
+                    new_line = line.strip().split()
+                    first_idx = int(new_line[0])
+                    second_idx = int(new_line[1])
+                    rep_string = data[first_idx:second_idx]
+                    rep_strings.append(rep_string.decode())
+                    n_reps = data.count(data[first_idx:second_idx])
+                    all_n_reps.append(n_reps)
+                    rep_dictionary.append({"n_reps": n_reps, "string": rep_string.decode()})
+            else:
+                # new_line = line.decode()
+                new_line = line.strip().split()
+                first_idx = int(new_line[0])
+                second_idx = int(new_line[1])
+                rep_string = data[first_idx:second_idx]
+                rep_strings.append(rep_string.decode())
+                n_reps = data.count(data[first_idx:second_idx])
+                all_n_reps.append(n_reps)
+                rep_dictionary.append({"n_reps": n_reps, "string": rep_string.decode()})
+            a = 1
     # checks
     print(len(rep_strings))
     print(len(all_n_reps))

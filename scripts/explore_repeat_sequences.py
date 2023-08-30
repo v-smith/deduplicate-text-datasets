@@ -5,12 +5,13 @@ import typer
 from tqdm import tqdm
 
 from dedup.utils import collate_repeats
+import multiprocessing as mp
 
 
 def main(
-        input_data_file: Path = typer.Option(default="data/SUBJECT_ID_to_NOTES_1a_10percent.csv",
+        input_data_file: Path = typer.Option(default="../data/SUBJECT_ID_to_NOTES_1a_7000.csv",
                                              help="Path to the input model"),
-        input_repeat_file: Path = typer.Option(default="tmp/SUBJECT_ID_to_NOTES_1a_10percent.train.remove.byterange",
+        input_repeat_file: Path = typer.Option(default="../tmp/SUBJECT_ID_to_NOTES_1a_7000.train.remove.byterange",
                                                help="Path to the jsonl file of the set"),
         inspect_dataframes: bool = typer.Option(default=False),
         input_pseudo_file: Path = typer.Option(default="data/SUBJECT_ID_to_NOTES_1b_7000.csv",
@@ -40,7 +41,7 @@ def main(
     print("------Data File Open--------")
     # load repeat file
     repeat_dict = collate_repeats(data=data, repeats_file=input_repeat_file)
-    repeat_df = pd.DataFrame(repeat_dict)
+    #repeat_df = pd.DataFrame(repeat_dict)
     print("---------Repeats Collated-----------")
     # inspect data
     if inspect_dataframes:
@@ -56,23 +57,27 @@ def main(
     # how many "repeats" come from duplicate records
 
     # how many "repeats" come from same patient
+    # init objects
+    #pool = mp.Pool(8)
+    #jobs = []
+
     repeats_per_patient_dict = []
     print("---------Finding Repeats Per Patient------------")
+    data_series = data_df.set_index(keys="SUBJECT_ID", drop=True, inplace=True).squeeze()
     for repeat in tqdm(repeat_dict):
         patients = []
         counter = 0
-        for index, row in data_df.iterrows():
+        for i, row in data_series.items():
             try:
-                if repeat["string"] in row["TEXT"]:
-                    patients.append(row["SUBJECT_ID"])
+                if repeat["string"] in row:
+                    patients.append(i)
             except:
                 print(repeat["string"])
                 print("\n")
-                print(row["TEXT"])
+                print(row)
                 counter+=1
         if counter > 0:
             print(f"Total Exceptions = {counter}")
-            # assert len(patients) == repeat["n_reps"]
         if patients:
             unique_patients = list(set(patients))
             repeats_per_patient_dict.append({"n_reps": repeat["n_reps"], "n_patients": len(unique_patients),

@@ -123,7 +123,7 @@ cargo run self-similar --data-file data/Deduplication_Example_10.csv --length-th
 cargo run self-similar --data-file data/SUBJECT_ID_to_NOTES_1a_10percent.csv --length-threshold 100 --cache-dir tmp/cache --num-threads 8
 #cargo run self-similar --data-file data/SUBJECT_ID_to_NOTES_1a_400tokens.csv --length-threshold 400 --cache-dir tmp/cache --num-threads 8
 #cargo run self-similar --data-file data/SUBJECT_ID_to_NOTES_1a_deduplicated_100tokens.csv --length-threshold 100 --cache-dir tmp/cache --num-threads 8
-cargo run self-similar --data-file data/SUBJECT_ID_to_NOTES_1a_7000.csv --length-threshold 100 --cache-dir tmp/cache --num-threads 8
+cargo run self-similar --data-file data/SUBJECT_ID_to_NOTES_1a_100tokens.csv --length-threshold 100 --cache-dir tmp/cache --num-threads 8
 cargo run self-similar --data-file data/SUBJECT_ID_to_NOTES_1b_7000.csv --length-threshold 100 --cache-dir tmp/cache --num-threads 8
 ```
 
@@ -183,9 +183,10 @@ The current data we have would tag this sequence as being a duplicate 99 times--
 This step reduces that down to just find ranges of bytes [a,b) which are duplicated more than once.
 To do this, run
 ```
+cargo run collect --data-file data/SUBJECT_ID_to_NOTES_1a_10percent.csv --cache-dir tmp/cache --length-threshold 200 > tmp/SUBJECT_ID_to_NOTES_1a_10percent.train.remove.byterange
 cargo run collect --data-file data/wiki40b.test --cache-dir /tmp/cache --length-threshold 100 > /tmp/wiki40b.test.remove.byterange
 #cargo run collect --data-file data/SUBJECT_ID_to_NOTES_1a_10percent.csv --cache-dir tmp/cache --length-threshold 100 > tmp/SUBJECT_ID_to_NOTES_1a_10percent.train.remove.byterange
-#cargo run collect --data-file data/SUBJECT_ID_to_NOTES_1a.csv --cache-dir tmp/cache --length-threshold 400 > tmp/SUBJECT_ID_to_NOTES_1a.train.remove.byterange
+#cargo run collect --data-file data/SUBJECT_ID_to_NOTES_1a.csv --cache-dir tmp/cache --length-threshold 100 > tmp/SUBJECT_ID_to_NOTES_1a.train.remove.byterange
 cargo run collect --data-file data/SUBJECT_ID_to_NOTES_1a_7000.csv --cache-dir tmp/cache --length-threshold 100 > tmp/SUBJECT_ID_to_NOTES_1a_7000.train.remove.byterange
 cargo run collect --data-file data/SUBJECT_ID_to_NOTES_1b_7000.csv --cache-dir tmp/cache --length-threshold 100 > tmp/SUBJECT_ID_to_NOTES_1b_7000.train.remove.byterange
 ```
