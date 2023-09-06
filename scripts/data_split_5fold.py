@@ -6,9 +6,9 @@ import typer
 
 
 def main(
-        input_data_file_path: Path = typer.Option(default="/datadrive/mimic/files/clinical-bert-mimic-notes/setup_outputs/SUBJECT_ID_to_NOTES_1b.csv",
+        input_data_file_path: Path = typer.Option(default="../mimic/files/clinical-bert-mimic-notes/setup_outputs/SUBJECT_ID_to_NOTES_1b.csv",
                                                   help="Path to the input model"),
-        output_data_file_name: Path = typer.Option(default="/datadrive/mimic/files/clinical-bert-mimic-notes/setup_outputs/split/SUBJECT_ID_to_NOTES_1b",
+        output_data_file_name: Path = typer.Option(default="../mimic/files/clinical-bert-mimic-notes/setup_outputs/split/SUBJECT_ID_to_NOTES_1b",
                                                    help="Path to the input model"),
 ):
     df = pd.read_csv(input_data_file_path, index_col=False)
