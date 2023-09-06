@@ -56,8 +56,6 @@ def main(
     # how many "repeats" come from duplicate records
 
     # how many "repeats" come from same patient
-    # init objects
-
     repeats_per_patient_dict = []
     print("---------Finding Repeats Per Patient------------")
     data_series = data_df.set_index(keys="SUBJECT_ID", drop=True).squeeze()
