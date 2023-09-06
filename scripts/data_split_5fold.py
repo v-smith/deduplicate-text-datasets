@@ -12,12 +12,14 @@ def main(
                                                    help="Path to the input model"),
 ):
     df = pd.read_csv(input_data_file_path, index_col=False)
+    print(len(df.index)/5)
     shuffled = df.sample(frac=1)
     result = np.array_split(shuffled, 5)
 
     counter = 0
     for part in result:
         counter += 1
+        print(f"Len of split {counter} is: {len(part)}")
         part.to_csv(path_or_buf=f"{output_data_file_name}_split{counter}.csv")
 
 
